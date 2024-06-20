@@ -1,9 +1,27 @@
 package be.ucll.model;
 
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.Max;
+import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
+
 public class User {
+@NotBlank(message = "name may not be empty")    
 private String name;
+
+@NotBlank(message = "Password may not be empty")
+@Size(min = 8, message = "Password must be at least 8 characters long")
 private String password;
+
+@NotBlank(message = "E-mail may not be empty")
+@Email(message = "E-mail must be a valid email format.")
 private String email;
+
+@NotNull(message = "age may not be empty")
+@Min(value = 0, message = "Age must be a positive integer between 0 and 101.")
+@Max(value = 101, message = "Age must be a positive integer between 0 and 101.")
 private int age;
 
 public User(String name, String password, String email, int age){
@@ -15,20 +33,15 @@ public User(String name, String password, String email, int age){
 }
 
 public  void setName (String name){
-    if(name.isEmpty() || name.trim().isEmpty()){
-        throw new DomainException("Name is required");
-    }
     this.name = name; 
 }
 
 public void setPassword(String password){
-    if(password.isEmpty() || password.length() < 8){
-        throw new DomainException("Password must be at least 8 charaters long");
-    }
     this.password = password;
 }
 
 public void setEmail(String email){
+  
     if(!email.contains("@")|| !email.contains(".")){
         throw new DomainException("Email must be a valid format");
     }
@@ -36,9 +49,6 @@ public void setEmail(String email){
 }
 
 public void setAge(int age){
-    if(age < 0 && age > 101){
-        throw new DomainException("Age must be a positive integer");
-    }
     this.age = age;
 }
 
