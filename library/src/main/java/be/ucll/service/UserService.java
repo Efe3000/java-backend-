@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import be.ucll.model.Loan;
 import be.ucll.model.User;
 import be.ucll.repository.LoanRepository;
+import be.ucll.repository.ProfileRepository;
 import be.ucll.repository.UserRepository;
 
 @Service
@@ -16,25 +17,28 @@ public class UserService {
     
 private final UserRepository userRepository;
 private final LoanRepository loanRepository;
+private final ProfileRepository profileRepository;
+
 
 
     @Autowired 
-    public UserService(UserRepository userRepository,  LoanRepository loanRepository ){
+    public UserService(UserRepository userRepository,  LoanRepository loanRepository, ProfileRepository profileRepository ){
         this.userRepository = userRepository;
         this.loanRepository = loanRepository;
+        this.profileRepository = profileRepository;
     }
 
 
     public List<User> getAllUsers(){
-        return userRepository.allUsers();
+        return userRepository.findAll();
     }
 
     public List<User> getAllAdultUsers(int age){
        
-        if(age < 18){
+        if(age < 17){
             throw new ServiceException("error");
         }
-        return userRepository.usersOlderThan(18);
+        return userRepository.findByAgeGreaterThan(17);
 
     }
 
@@ -49,7 +53,7 @@ private final LoanRepository loanRepository;
                 throw new ServiceException("Minimum age cannot be greater than maximum age.");
             }
         
-            for(User i: userRepository.allUsers()){
+            for(User i: userRepository.findAll()){
                 if(i.getAge() >= min && i.getAge() <= max){
                     minMax.add(i);
                 }
@@ -60,38 +64,33 @@ private final LoanRepository loanRepository;
             }
 
         return minMax;
-
-
     }
 
     public List<User> findUserByName(String name){
-            if( userRepository.usersByName(name) == null ){
+            if( userRepository.findUsersByName(name) == null ){
                 throw new ServiceException("no users with given name");
             }
         
-        return userRepository.usersByName(name);
+        return userRepository.findUsersByName(name);
     }
 
     public User addUser(User user){
-        User existingUser = userRepository.userExists(user.getEmail());
+        User existingUser = userRepository.findUserByEmail(user.getEmail());
             if(existingUser != null){
                 throw new ServiceException("user already exists");
             }
+            if (user.getProfile() != null) {
+                profileRepository.save(user.getProfile());
+            }
 
-    //     String userEmail = user.getEmail();
-
-    //    for(User i: userRepository.allUsers()){
-    //     if(i.getEmail().equals(userEmail)){
-    //         throw new ServiceException("user already exists");
-    //     }
-    //    }
-       userRepository.allUsers().add(user);
+  
+       userRepository.findAll().add(user);
        return user;
 
     }
     
     public User updateUser(String email, User newUser){
-        User existingUser = userRepository.userExists(email);
+        User existingUser = userRepository.findUserByEmail(email);
        
         //check if user even exists 
         if (existingUser == null) {
@@ -109,13 +108,13 @@ private final LoanRepository loanRepository;
          
  
         
-         userRepository.allUsers().add(existingUser);  
+         userRepository.findAll().add(existingUser);  
          return existingUser;
         }
 
 
     public  void removeUserLoan (String email){
-        User user = userRepository.userExists(email);
+        User user = userRepository.findUserByEmail(email);
         
         if(user == null){
             throw new ServiceException("User does not exist");
@@ -137,9 +136,8 @@ private final LoanRepository loanRepository;
     }
 
 
-    //Q16 
     public  void removeUser (String email){
-        User user = userRepository.userExists(email);
+        User user = userRepository.findUserByEmail(email);
 
         
         if(user == null){
@@ -156,12 +154,19 @@ private final LoanRepository loanRepository;
         } 
 
         //delete specified user 
-        userRepository.allUsers().remove(user);
+        userRepository.findAll().remove(user);
 
         System.out.println("User successfully deleted.");
     }
 
 
+    public  User oldestUser(){
+        if (userRepository.findFirstByOrderByAgeDesc() == null ){
+            throw new ServiceException("No users found");
+        }
+        return userRepository.findFirstByOrderByAgeDesc();
+
+    }
 
 
 

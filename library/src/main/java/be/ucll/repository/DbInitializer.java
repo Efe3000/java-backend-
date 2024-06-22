@@ -20,8 +20,8 @@ private UserRepository userRepository;
     public void initialize() {
         User user = new User("John Doe", "john1234", "john.doe@ucll.be", 25);
         User user2 = new User("Jane Toe", "jane1234", "jane.toe@ucll.be", 30);
-        User user3 = new User("Jack Doe", "jack1234", "jack.doe@ucll.be", 5);
-        User user4 = new User("Sarah Doe", "sarah1234", "sarah.doe@ucll.be", 4);
+        User user3 = new User("Jack Doe", "jack1234", "jack.doe@ucll.be", 13);
+        User user4 = new User("Sarah Doe", "sarah1234", "sarah.doe@ucll.be", 10);
         User user5 = new User("Birgit Doe", "birgit1234", "birgit.doe@ucll.be", 18);
     
         userRepository.save(user);

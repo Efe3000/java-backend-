@@ -28,7 +28,7 @@ public class LoanService {
 
 
     public List<Loan> getLoansByUser(String email, boolean onlyActive) {
-        User existingUser = userRepository.userExists(email);
+        User existingUser = userRepository.findUserByEmail(email);
       
         //check if user even exists 
         if (existingUser == null) {

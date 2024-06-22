@@ -93,9 +93,14 @@ public class UserRestController {
         return loanService.getLoansByUser(email, onlyActive);
     }
 
+    @GetMapping("/oldest")
+    public User getOldestUser(){
+        return userService.oldestUser();
+    }
+
 
     @PostMapping
-    public User addPony(@Valid @RequestBody User user) {
+    public User addUser(@Valid @RequestBody User user) {
     return userService.addUser(user); 
     }
 
@@ -115,6 +120,8 @@ public class UserRestController {
     public void removeUser(@PathVariable String email) {
     userService.removeUser(email);
     }
+
+
 
 
 

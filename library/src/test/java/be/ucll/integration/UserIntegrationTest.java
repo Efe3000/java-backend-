@@ -1,7 +1,6 @@
 package be.ucll.integration;
 
 
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,7 +10,7 @@ import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.web.reactive.server.WebTestClient;
 
 import be.ucll.repository.DbInitializer;
-import be.ucll.repository.UserRepositoryImpl;
+import be.ucll.repository.UserRepository;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @AutoConfigureWebTestClient
@@ -22,7 +21,7 @@ public class UserIntegrationTest {
     private WebTestClient client;
     
     @Autowired
-    private UserRepositoryImpl repository;
+    private UserRepository repository;
 
     @Autowired
     private DbInitializer dbInitializer;    

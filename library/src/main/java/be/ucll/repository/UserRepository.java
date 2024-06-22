@@ -2,20 +2,26 @@ package be.ucll.repository;
 
 import java.util.List;
 
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
+
 import be.ucll.model.User;
 
-public interface UserRepository {
+@Repository 
+public interface UserRepository extends JpaRepository<User, Long> {
 
-    List<User> allUsers();
+    List<User> findAll();
 
-    List<User> usersOlderThan(int age);
+    List<User> findByAgeGreaterThan(int age);
     
 
-    List <User> usersByName(String name);
+    List <User> findUsersByName(String name);
 
-    User userExists(String email);
+    User findUserByEmail(String email);
+    
+    User findFirstByOrderByAgeDesc();
 
-    void save(User user);
+
 
     
 }
