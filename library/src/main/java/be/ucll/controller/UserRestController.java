@@ -22,6 +22,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import be.ucll.model.DomainException;
 import be.ucll.model.Loan;
+import be.ucll.model.Membership;
 import be.ucll.model.User;
 import be.ucll.service.LoanService;
 import be.ucll.service.ServiceException;
@@ -121,11 +122,10 @@ public class UserRestController {
     userService.removeUser(email);
     }
 
-
-
-
-
-
+    @PostMapping("/{email}/membership")
+    public void addMembership(@PathVariable String email, @Valid @RequestBody Membership membership){
+        userService.addMembership(email, membership);
+    }
 
 
 }

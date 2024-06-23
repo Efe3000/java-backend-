@@ -13,6 +13,7 @@ import org.junit.jupiter.api.Test;
 
 import be.ucll.model.User;
 import be.ucll.repository.LoanRepository;
+import be.ucll.repository.MembershipRepository;
 import be.ucll.repository.ProfileRepository;
 import be.ucll.service.ServiceException;
 import be.ucll.service.UserService;
@@ -28,6 +29,7 @@ private UserRepository userRepository;
 private UserService userService;
 public LoanRepository loanRepository;
 public ProfileRepository profileRepository;
+public MembershipRepository membershipRepository;
 
 // public UserRepository userRepo;
 public List<User> userTest;
@@ -35,26 +37,21 @@ public List<User> userTest;
 
     @BeforeEach //instead of declaring a new initialization per test we'll use this instead. 
     void setup(){
+    userTest = new ArrayList<>();    
     userRepository = new UserRepositoryTestImpl();
-    // userRepo = userRepository; // Initialize userRepo
     loanRepository = new LoanRepository();
     profileRepository = new ProfileRepositoryTestImpl();
-    userService = new UserService(userRepository,loanRepository, profileRepository);
+    userService = new UserService(userRepository,loanRepository, profileRepository, membershipRepository);
     }
 
+        @Test
+        void givenAllUsersCalled_thenAllUsersAreReturned(){
+            List<User> users = userRepository.findAll();
+            assertEquals(true, users.equals(userRepository.findAll()));
 
-
-
-    @Test
-    void givenAllUsersCalled_thenAllUsersAreReturned(){
-        List<User> users = userRepository.findAll();
-        assertEquals(true, users.equals(userRepository.findAll()));
-
-    }
+        }
 
     
-      
-
        @Test 
        void given_adultUsersAreCalled_thenAdultUsersAreReturned(){
         List<User> users = userService.getAllAdultUsers(17);
@@ -65,9 +62,7 @@ public List<User> userTest;
 
        @Test 
        void given_allUsersMinMaxAreCalled_thenUsersMinMaxIsReturned(){
-        UserRepositoryTestImpl userRepository = new UserRepositoryTestImpl();
-        UserService userService = new UserService(userRepository,  loanRepository, profileRepository); 
-        userTest = new ArrayList<>();
+   
 
        userTest.add(new User("John Doe", "john1234", "john.doe@ucll.be", 25));
        userTest.add(new User("Jane Toe", "jane1234", "jane.toe@ucll.be", 30));

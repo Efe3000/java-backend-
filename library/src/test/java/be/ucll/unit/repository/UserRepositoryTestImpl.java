@@ -27,10 +27,12 @@ public class UserRepositoryTestImpl implements UserRepository {
         new User("Birgit Doe", "birgit1234", "birgit.doe@ucll.be", 18) ));
         }
     
-        @Override
-        public List<User> findAll() {
-        return users; 
-    }
+       
+    
+
+    @Override
+    public List<User> findAll() {
+    return users; }
 
     
         public List<User> findByAgeGreaterThan(int age){

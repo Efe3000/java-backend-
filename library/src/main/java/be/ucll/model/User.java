@@ -1,10 +1,14 @@
 package be.ucll.model;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.Email;
@@ -42,8 +46,19 @@ private int age;
 @JoinColumn(name = "profile_id")
 public Profile profile;
 
+@OneToMany(mappedBy = "user")
+private List<Membership> memberships = new ArrayList<>();
+
 
 protected User (){}
+
+public User ( String name, String password, String email, int age){
+    setName(name);
+    setPassword(password);
+    setEmail(email);
+    setAge(age);
+  
+}
 
 public User (Profile profile, String name, String password, String email, int age){
     
@@ -57,13 +72,14 @@ public User (Profile profile, String name, String password, String email, int ag
     }
 }
 
-public User(String name, String password, String email, int age){
+public User(String name, String password, String email, int age,  List<Membership> memberships){
     setName(name);
     setPassword(password);
     setEmail(email);
     setAge(age);
-
+    this.memberships = memberships;
 }
+
 
 public  void setName (String name){
     this.name = name; 
@@ -107,6 +123,30 @@ public Profile getProfile() {
 
 public void setProfile(Profile profile) {
     this.profile = profile;
+}
+
+public Long getId() {
+    return id;
+}
+
+public void setId(Long id) {
+    this.id = id;
+}
+
+public List<Membership> getMemberships() {
+    return memberships;
+}
+
+public void setMemberships(Membership newMember) {
+   for (Membership m : memberships){
+    if(m.getStartDate().isBefore(newMember.getEndDate())){
+        throw new DomainException("member already has membership");
+    }
+   }
+   newMember.setUser(this);
+   memberships.add(newMember);
+
+
 }
 
 

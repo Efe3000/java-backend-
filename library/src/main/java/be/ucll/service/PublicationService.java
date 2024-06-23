@@ -19,7 +19,7 @@ public class PublicationService {
 
  }
  public List<Publication> getAllPublications(){
-    return publicationRepository.allPublications();
+    return publicationRepository.findAll();
 
 }
 
@@ -28,7 +28,7 @@ public class PublicationService {
 
         String lowerSearchTitle = title.toLowerCase(); // Convert search title to lowercase
 
-        for (Publication pub : publicationRepository.allPublications()) {
+        for (Publication pub : publicationRepository.findAll()) {
             String lowerTitle = pub.getTitle().toLowerCase(); // Convert publication title to lowercase
 
             // Check if the publication title contains the search title (case-insensitive) and the type matches
@@ -48,7 +48,7 @@ public class PublicationService {
     public List<Publication> returnAvailableCopies (int copies){
         List<Publication> pubs = new ArrayList<>();
       
-        for(Publication i: publicationRepository.allPublications()){
+        for(Publication i: publicationRepository.findAll()){
         if(i.getAvailableCopies() >= copies ){
             pubs.add(i);
         }

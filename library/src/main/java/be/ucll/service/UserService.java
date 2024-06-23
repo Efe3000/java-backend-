@@ -7,8 +7,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import be.ucll.model.Loan;
+import be.ucll.model.Membership;
 import be.ucll.model.User;
 import be.ucll.repository.LoanRepository;
+import be.ucll.repository.MembershipRepository;
 import be.ucll.repository.ProfileRepository;
 import be.ucll.repository.UserRepository;
 
@@ -18,14 +20,16 @@ public class UserService {
 private final UserRepository userRepository;
 private final LoanRepository loanRepository;
 private final ProfileRepository profileRepository;
+private final MembershipRepository membershipRepository;
 
 
 
     @Autowired 
-    public UserService(UserRepository userRepository,  LoanRepository loanRepository, ProfileRepository profileRepository ){
+    public UserService(UserRepository userRepository,  LoanRepository loanRepository, ProfileRepository profileRepository,  MembershipRepository membershipRepository ){
         this.userRepository = userRepository;
         this.loanRepository = loanRepository;
         this.profileRepository = profileRepository;
+        this.membershipRepository = membershipRepository;
     }
 
 
@@ -168,9 +172,23 @@ private final ProfileRepository profileRepository;
 
     }
 
+    public User addMembership(String email, Membership mem) {
+        User user = userRepository.findUserByEmail(email);
+        if(user == null){
+            throw new ServiceException("user not found");
+        }
 
-
-
+        user.setMemberships(mem);
+        membershipRepository.save(mem);
+        return user;
+    }
 
 
 }
+
+
+
+
+
+
+
