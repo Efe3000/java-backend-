@@ -245,4 +245,10 @@ public class MembershipRepositoryTestImpl  implements MembershipRepository{
         throw new UnsupportedOperationException("Unimplemented method 'findBy'");
     }
 
+    @Override
+    public List<Membership> findByUser(User user) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'findByUser'");
+    }
+
 }

@@ -5,6 +5,7 @@ import java.time.LocalDate;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 
 import jakarta.persistence.CascadeType;
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -22,10 +23,10 @@ public class Membership {
 @GeneratedValue(strategy = GenerationType.IDENTITY)
 private Long id; 
 
-  @ManyToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "user_id")
-    @JsonBackReference
-    private User user;
+@ManyToOne(cascade = CascadeType.ALL)
+@JoinColumn(name = "user_id")
+@JsonBackReference
+private User user;
 
 @NotNull(message = "startdate is required")
 LocalDate startDate;
@@ -36,6 +37,8 @@ LocalDate endDate;
 @NotNull(message = "type is required")
 String type;
 
+@Column(name = "number_of_free_loans")
+int numberOfFreeLoans;
 
 
 protected Membership(){}
@@ -45,6 +48,36 @@ public Membership(User user, LocalDate startDate, LocalDate endDate, String type
     setStartDate(startDate);
     setEndDate(endDate);
     setType(type);
+}
+
+
+public Membership(User user, LocalDate startDate, LocalDate endDate, String type ,int numberOfFreeLoans){
+    setUser(user);
+    setStartDate(startDate);
+    setEndDate(endDate);
+    setType(type);
+    setNumberOfFreeLoans(numberOfFreeLoans);
+}
+
+
+private void setNumberOfFreeLoans(int numberOfFreeLoans){
+    this.numberOfFreeLoans = numberOfFreeLoans;
+}
+
+public void freeLoans(String type, int numberOfFreeLoans) {
+    if(!((type.equals("Bronze") && numberOfFreeLoans >= 0 || numberOfFreeLoans <=  5)
+        || (type.equals("Silver") && numberOfFreeLoans >= 6 || numberOfFreeLoans <= 10) 
+        || (type.equals("Gold") && numberOfFreeLoans >= 11 || numberOfFreeLoans <= 15) )){
+       throw new DomainException("Invalid number of free loans for membership type.");     
+    }
+}
+
+public void redeemFreeLoan(int number){
+    if(numberOfFreeLoans == 0){
+        throw new DomainException("No more free loans available within membership");
+    }
+    numberOfFreeLoans -= 1;
+    setNumberOfFreeLoans(numberOfFreeLoans);
 }
 
 public LocalDate getStartDate() {

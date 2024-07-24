@@ -1,5 +1,6 @@
 package be.ucll.controller;
 
+import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -99,6 +100,10 @@ public class UserRestController {
         return userService.oldestUser();
     }
 
+    @GetMapping("/{email}/membership")
+    public List <Membership> getMemberships(@PathVariable String email, @RequestParam LocalDate date){
+        return userService.getMembership(email, date);
+    }
 
     @PostMapping
     public User addUser(@Valid @RequestBody User user) {

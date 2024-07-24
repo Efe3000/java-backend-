@@ -3,15 +3,44 @@ package be.ucll.model;
 import java.time.LocalDate;
 import java.util.List;
 
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.JoinTable;
+import jakarta.persistence.ManyToMany;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotNull;
 
+@Entity
+@Table(name = "loan")
 public class Loan{
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    @ManyToOne
+    @JoinColumn(name = "user_id")
     private User user;
+
+    @ManyToMany
+    @JoinTable(
+        name = "loan_publications",
+        joinColumns = @JoinColumn(name = "loan_id"),
+        inverseJoinColumns = @JoinColumn(name = "publication_id")
+
+    )
     private List <Publication> publications; 
     
     @NotNull(message = "Start date is required")
     private LocalDate startDate;
+
     private LocalDate endDate;
+
+    protected Loan(){}
 
     public Loan(User user, List<Publication> publications, LocalDate startDate, LocalDate endDate){
        setUser(user);
@@ -33,7 +62,7 @@ public void setStartDate(LocalDate startDate) {
 
 }
 
-public void setEndDate(LocalDate endDate){
+private void setEndDate(LocalDate endDate){
     if (endDate.isBefore(startDate)){
         throw new DomainException("start date cannot be after enddate");
     }

@@ -18,6 +18,7 @@ import be.ucll.repository.ProfileRepository;
 import be.ucll.service.ServiceException;
 import be.ucll.service.UserService;
 import be.ucll.repository.UserRepository;
+import be.ucll.unit.repository.LoanRepositoryTestImpl;
 import be.ucll.unit.repository.ProfileRepositoryTestImpl;
 import be.ucll.unit.repository.UserRepositoryTestImpl;
 
@@ -39,7 +40,7 @@ public List<User> userTest;
     void setup(){
     userTest = new ArrayList<>();    
     userRepository = new UserRepositoryTestImpl();
-    loanRepository = new LoanRepository();
+    loanRepository = new LoanRepositoryTestImpl();
     profileRepository = new ProfileRepositoryTestImpl();
     userService = new UserService(userRepository,loanRepository, profileRepository, membershipRepository);
     }

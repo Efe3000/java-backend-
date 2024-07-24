@@ -1,5 +1,6 @@
 package be.ucll.service;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -21,6 +22,7 @@ private final UserRepository userRepository;
 private final LoanRepository loanRepository;
 private final ProfileRepository profileRepository;
 private final MembershipRepository membershipRepository;
+public Membership mem;
 
 
 
@@ -124,7 +126,7 @@ private final MembershipRepository membershipRepository;
             throw new ServiceException("User does not exist");
         }
 
-        List<Loan> userLoan = loanRepository.findLoansByUser(email, false);
+        List<Loan> userLoan = loanRepository.findByUser(user);
 
         if(userLoan.isEmpty()) {
             throw new ServiceException("User has no active loans");
@@ -148,7 +150,7 @@ private final MembershipRepository membershipRepository;
             throw new ServiceException("User does not exists");
         }
 
-        List<Loan> userLoan = loanRepository.findLoansByUser(user.getEmail(), false);
+        List<Loan> userLoan = loanRepository.findByUser(user);
 
         // if(userLoan.isEmpty()) {
         //     throw new ServiceException("User has no active loans");
@@ -182,6 +184,72 @@ private final MembershipRepository membershipRepository;
         membershipRepository.save(mem);
         return user;
     }
+
+    public List <Membership> getMembership (String email, LocalDate date){
+        User user = userRepository.findUserByEmail(email);
+        List<Membership> validMemberships = new ArrayList<>();
+
+        if(!email.equals(mem.getUser().getEmail())){
+            throw new ServiceException("User does not exist");
+        }
+        
+        for (Membership mem : user.getMemberships()) {
+            // Check if the provided date is within the membership period
+            if (!date.isBefore(mem.getStartDate()) && !date.isAfter(mem.getEndDate())) {
+                validMemberships.add(mem);
+            }
+        }
+
+        if (validMemberships.isEmpty()) {
+            throw new ServiceException("No membership found for user on " + date);
+        }
+
+        return validMemberships;
+    }
+
+
+
+
+
+
+
+
+    // public int membership(Long loanId, Long memId) {
+    //     .... mem = eventService.getEventById(eventId);
+    //     ... loan = ...Repository.findById(...Id).orElse(null);
+
+    //     List<Membership> mem = mem.getMemberships();
+    //     Boolean has.... = eventM.stream().anyM(s -> s.getName().equals(s.getName()));
+    //     if (!has....) {
+    //         throw new ServiceException("memberships is not present in the .");
+    //     }
+
+    //     LocalDate today = TimeTracker.getToday();
+    //     LocalDate startDate = event.getStartDate();
+    //     LocalDate endDate = event.getEndDate();
+    //     Boolean loanAssignedDuringTheMems = today.isAfter(startDate) && today.isBefore(endDate);
+    //     if (!kudoAssignedDuringTheEvent){
+    //         throw new ServiceException("loans can.....");
+    //     }
+
+    //     int result = 0;
+    //     Boolean .... = s.get....();
+    //     if (!TS) {
+    //         result += 5;
+    //     }
+    //     else {
+    //         result += 2 * s.get....();
+    //     } 
+    //     return result;
+    // }
+
+
+
+
+
+
+
+
 
 
 }

@@ -74,19 +74,19 @@ public List<Membership> memberships;
         new User("Birgit Doe", "birgit1234", "birgit.doe@ucll.be", 18) ));
 
         startDates = new ArrayList<>(List.of(
-            LocalDate.of(2024, 7, 2),
-            LocalDate.of(2024, 7, 2),
-            LocalDate.of(2024, 7, 2),
-            LocalDate.of(2024, 7, 2),
-            LocalDate.of(2024, 7, 2)
+            LocalDate.of(2024, 9, 2),
+            LocalDate.of(2024, 9, 2),
+            LocalDate.of(2024, 9, 2),
+            LocalDate.of(2024, 9, 2),
+            LocalDate.of(2024, 9, 2)
         ));
 
         endDates = new ArrayList<>(List.of(
-            LocalDate.of(2025, 7, 5),
-            LocalDate.of(2025, 7, 5),
-            LocalDate.of(2025, 7, 5),
-            LocalDate.of(2025, 7, 5),
-            LocalDate.of(2025, 7, 5)
+            LocalDate.of(2025, 10, 5),
+            LocalDate.of(2025, 10, 5),
+            LocalDate.of(2025, 10, 5),
+            LocalDate.of(2025, 10, 5),
+            LocalDate.of(2025, 10, 5)
             ));
 
 

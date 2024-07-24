@@ -15,6 +15,7 @@ import be.ucll.model.User;
 import be.ucll.repository.LoanRepository;
 import be.ucll.repository.UserRepository;
 import be.ucll.service.LoanService;
+import be.ucll.unit.repository.LoanRepositoryTestImpl;
 import be.ucll.unit.repository.UserRepositoryTestImpl;
 
 public class LoanServiceTest {
@@ -22,7 +23,7 @@ public class LoanServiceTest {
     @Test 
     void given_emailOfUsers_thenUsersWithLoansAreReturned(){    
 
-        LoanRepository loanRepo = new LoanRepository();
+        LoanRepository loanRepo = new LoanRepositoryTestImpl();
         UserRepository userRepo = new UserRepositoryTestImpl();
         LoanService loanService = new LoanService(loanRepo, userRepo);
         List <Loan> loanTest; 

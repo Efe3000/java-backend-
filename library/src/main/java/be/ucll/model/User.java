@@ -3,6 +3,8 @@ package be.ucll.model;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -47,6 +49,7 @@ private int age;
 public Profile profile;
 
 @OneToMany(mappedBy = "user")
+@JsonManagedReference
 private List<Membership> memberships = new ArrayList<>();
 
 
